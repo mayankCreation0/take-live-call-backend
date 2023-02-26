@@ -152,7 +152,7 @@ const expireEvent = async (req, res) => {
 const getEventDetails = async (req, res) => {
     try {
         const eventId = req.params.id;
-        const event = await eventmodels.findOne(eventId).populate('organizer').populate('players.user', '-password');
+        const event = await eventmodels.findOne({_id:eventId}).populate('organizer').populate('players.user', '-password');
         if (!event) {
             return res.status(404).json({ msg: 'Event not found' });
         }
