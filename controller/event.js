@@ -45,13 +45,18 @@ const joinEvent = async (req, res) => {
 
 const getEvent = async (req, res) => {
     try {
-        const events = await eventmodels.find().populate("organizer", "-password").sort({ date: 'asc' });
-        res.json(events)
+        const events = await eventmodels.find({
+            date: { $gte: new Date() } 
+        })
+            .populate("organizer", "-password")
+            .sort({ date: 'asc' }); 
+        res.json(events);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
 }
+
 const updateStatus = async (req, res) => {
     try {
         const { id, playerId } = req.params;
