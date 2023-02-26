@@ -6,7 +6,7 @@ const cors = require('cors');
 const app = express();
 connectDB();
 app.use(express.json({ extended: false }));
-
+app.use(cors());
 app.use('/', userRouter)
 app.use('/', eventRouter)
 app.get('/',(req,res)=>{
