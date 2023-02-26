@@ -45,7 +45,14 @@ const userlogin = async (req, res) => {
         res.status(500).send({ message: "Something went wrong" });
     }
 };
+const savelogin = async(req, res) => {
+    const id =req.userid;
+    console.log(id)
+    const user = await models.findOne({_id:id});
+    console.log(user)
+    res.status(201).send(user);
+}
 
 module.exports = {
-    userlogin,usersignup
+    userlogin,usersignup,savelogin
 };
