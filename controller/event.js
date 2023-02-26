@@ -149,7 +149,28 @@ const expireEvent = async (req, res) => {
     }
 };
 
+const getEventPlayers = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const event = await eventmodels.findById(eventId).populate('organizer').populate('players.user', '-password');
+        if (!event) {
+            return res.status(404).json({ msg: 'Event not found' });
+        }
+        const players = event.players.map(player => ({
+            id: player.user,
+            name: player.user.name,
+            email: player.user.email,
+            status: player.status
+        }));
+        res.json(players);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+}
+
+
 module.exports = {
-    updateStatus, getEvent, joinEvent, createEvent , expireEvent,cancelStatus
+    updateStatus, getEvent, joinEvent, createEvent, expireEvent, cancelStatus, getEventPlayers
 }
 
