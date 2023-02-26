@@ -25,12 +25,14 @@ const joinEvent = async (req, res) => {
         const event = await eventmodels.findById(req.params.id);
         console.log(event)
         if (event) {
+            if (event.players.find((player) => player._id.toString() === req.userid)) {
+                return res.status(400).json({ msg: 'User has already joined the event' });
+            }
             if (event.maxPlayers <= event.players.length) {
                 return res.status(400).json({ msg: 'Event is already full' });
             }
-            if (event.players.find((player) => player.user.toString() === req.userid)) {
-                return res.status(400).json({ msg: 'User has already joined the event' });
-            }
+            // (event.players.find((player) =>console.log(player._id)) )
+            
             event.players.push({ user: req.userid, status: 'pending' });
             await (await event.save()).populate("players.user");
             res.json(event.players);
