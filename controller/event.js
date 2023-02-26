@@ -20,6 +20,7 @@ const createEvent = async (req, res) => {
     }
 }
 const joinEvent = async (req, res) => {
+    console.log(req.params.id)
     try {
         const event = await eventmodels.findById(req.params.id);
         console.log(event)
