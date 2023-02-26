@@ -46,7 +46,7 @@ const joinEvent = async (req, res) => {
 const getEvent = async (req, res) => {
     try {
         const events = await eventmodels.find({
-            date: { $gte: new Date() } 
+            date: { $gte: new Date().toISOString().substring(0, 10) } 
         })
             .populate("organizer", "-password")
             .sort({ date: 'asc' }); 
